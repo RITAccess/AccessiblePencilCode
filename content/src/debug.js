@@ -190,6 +190,7 @@ var showPopupErrorMessage = function (msg) {
   var center = document.getElementById('error-advice') ||
       document.createElement('center');
   center.id = "error-advice";
+  center.setAttribute("role", "alert");
   document.body.insertBefore(center, document.body.firstChild);
   center.style.background = 'rgba(240,240,240,0.8)';
   center.style.position = 'absolute';
