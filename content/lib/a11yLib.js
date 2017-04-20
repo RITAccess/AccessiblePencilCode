@@ -42,6 +42,8 @@ a11yController.prototype.addARIAattributes = function () {
     var outputDocument = outputFrame.contentDocument || outputFrame.contentWindow.document
     outputDocument.body.getElementsByClassName('turtlefield')[1].setAttribute('role', 'presentation');
 
+    //New File Notification
+    var overflowDiv = document.getElementById('notification').setAttribute('role', 'status')
 }
 
 //remove focus from elements that shouldn't have focus
