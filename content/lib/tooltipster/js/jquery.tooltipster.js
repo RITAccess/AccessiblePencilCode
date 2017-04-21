@@ -335,7 +335,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 							pointerEvents = self.options.interactive ? 'pointer-events: auto;' : '';
 						
 						// build the base of our tooltip
-						self.$tooltip = $('<div class="tooltipster-base '+ self.options.theme +'" style="'+ minWidth +' '+ maxWidth +' '+ pointerEvents +' '+ animationSpeed +'"><div class="tooltipster-content"></div></div>');
+						self.$tooltip = $('<div class="tooltipster-base '+ self.options.theme +'" style="'+ minWidth +' '+ maxWidth +' '+ pointerEvents +' '+ animationSpeed +'" role="tooltip"><div class="tooltipster-content"></div></div>');
 						
 						// only add the animation class if the user has a browser that supports animations
 						if (supportsTransitions()) self.$tooltip.addClass(animation);
