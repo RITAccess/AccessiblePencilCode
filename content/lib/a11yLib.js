@@ -7,7 +7,9 @@ function a11yController() {
     this.blockEditor = document.querySelector('.droplet-wrapper-div')
     this.blockToggle = document.querySelector('.blocktoggle')
     this.textToggle = document.querySelector('.texttoggle')
-    
+    this.blockCategoriesMenu = document.querySelector('.droplet-palette-header')
+    this.blockCategories = document.querySelectorAll('.droplet-palette-group-header')
+
     this.init();
     this.addARIAattributes(); 
 }
@@ -28,6 +30,14 @@ a11yController.prototype.addARIAattributes = function () {
     //block palette
     this.blockPalette.setAttribute('role', 'region')
     this.blockPalette.setAttribute('aria-label', 'block palette')
+    this.blockCategoriesMenu.setAttribute('role', 'menu')
+    this.blockCategoriesMenu.setAttribute('aria-label', 'block categories')
+    this.blockCategoriesMenu.setAttribute('tabindex', '0')
+
+    this.blockCategories.forEach(function(category) {
+        category.setAttribute('role', 'menuitemradio')
+        category.setAttribute('tabindex', '0')
+    }, this);
 
     //block editor
     this.blockEditor.setAttribute('role', 'region')
@@ -44,6 +54,7 @@ a11yController.prototype.addARIAattributes = function () {
 
     //New File Notification
     var overflowDiv = document.getElementById('notification').setAttribute('role', 'status')
+
 }
 
 //remove focus from elements that shouldn't have focus
@@ -64,8 +75,6 @@ a11yController.prototype.init = function () {
     textInput.blur();
     textInput.focus();
     function initFocus() {
-        console.log('focused');
-        console.log(document.getElementById('focus-guide'))
         document.getElementById('focus-guide').focus()
         textInput.removeEventListener("focus", initFocus)
     }

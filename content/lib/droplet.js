@@ -62511,6 +62511,12 @@ Editor.prototype.setPalette = function(paletteGroups) {
       };
       paletteGroupHeader.addEventListener('click', clickHandler);
       paletteGroupHeader.addEventListener('touchstart', clickHandler);
+      paletteGroupHeader.addEventListener('keydown', function(event) {
+          if(event.keyCode == 32 || event.keyCode == 13) {
+            event.preventDefault();
+            clickHandler();
+          }
+      });
       if (i === 0) {
         return updatePalette();
       }
