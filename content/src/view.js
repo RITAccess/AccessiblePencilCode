@@ -698,11 +698,11 @@ function showMiddleButton(which) {
         leftpane = state.pane[paneid('left')];
     if (rightpane.running && leftpane.editor &&
         rightpane.lastChangeTime >= leftpane.lastChangeTime) {
-      html = '<button id="run" class="quiet" ' +
+      html = '<button id="run" class="quiet" aria-label="Restart program" ' +
              'title="Restart program (Ctrl+Enter)">' +
              '<div class="reload"></div></button>';
     } else {
-      html = '<button id="run" title="Run program (Ctrl+Enter)">' +
+      html = '<button id="run" title="Run program (Ctrl+Enter)" aria-label="Run program">' +
              '<div class="triangle"></div></button>';
     }
     $('#middle').find('div').eq(0).html(html);
