@@ -62615,7 +62615,9 @@ hook('rebuild_palette', 1, function() {
     block = data.block;
     hoverDiv = document.createElement('div');
     hoverDiv.className = 'droplet-hover-div';
+    hoverDiv.setAttribute('role', 'menuitem');
     hoverDiv.title = (ref2 = data.title) != null ? ref2 : block.stringify();
+    hoverDiv.setAttribute('aria-label', hoverDiv.title + ' block');
     if (data.id != null) {
       hoverDiv.setAttribute('data-id', data.id);
     }
@@ -64081,6 +64083,8 @@ hook('populate', 2, function() {
   this.paletteScroller.className = 'droplet-palette-scroller';
   this.paletteScrollerStuffing = document.createElement('div');
   this.paletteScrollerStuffing.className = 'droplet-palette-scroller-stuffing';
+  this.paletteScrollerStuffing.setAttribute('role', 'menu');
+  this.paletteScrollerStuffing.setAttribute('aria-label', 'Block menu');
   this.paletteScroller.appendChild(this.paletteScrollerStuffing);
   this.paletteElement.appendChild(this.paletteScroller);
   return this.paletteScroller.addEventListener('scroll', (function(_this) {

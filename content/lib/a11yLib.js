@@ -51,7 +51,6 @@ a11yController.prototype.addARIAattributes = function () {
 
     //New File Notification
     var overflowDiv = document.getElementById('notification').setAttribute('role', 'status')
-
 }
 
 //remove focus from elements that shouldn't have focus
