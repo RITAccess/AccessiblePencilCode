@@ -9,7 +9,6 @@ function a11yController() {
     this.textToggle = document.querySelector('.texttoggle')
     this.blockCategoriesMenu = document.querySelector('.droplet-palette-header')
     this.blockCategories = document.querySelectorAll('.droplet-palette-group-header')
-
     this.init();
     this.addARIAattributes();
 }
@@ -18,11 +17,6 @@ function a11yController() {
 a11yController.prototype.addARIAattributes = function () {
     //top bar
     this.banner.setAttribute('role', 'banner')
-
-    //add labels to banner buttons
-    this.bannerBtns.forEach(function(element) {
-        element.setAttribute('aria-label', element.id);
-    }, this);
 
     //block palette
     this.blockPalette.setAttribute('role', 'region')
