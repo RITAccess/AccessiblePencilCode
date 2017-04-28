@@ -7,10 +7,46 @@ function a11yController() {
     this.blockEditor = document.querySelector('.droplet-wrapper-div')
     this.blockToggle = document.querySelector('.blocktoggle')
     this.textToggle = document.querySelector('.texttoggle')
+    this.blockMenuHeader = document.querySelector('.blockmenu')
     this.blockCategoriesMenu = document.querySelector('.droplet-palette-header')
     this.blockCategories = document.querySelectorAll('.droplet-palette-group-header')
+    this.blockPicker = document.querySelector('.droplet-palette-scroller-stuffing')
+    this.selectedCategory
+
     this.init();
-    this.addARIAattributes();
+    this.addARIAattributes(); 
+    this.blockPaletteController();
+}
+
+a11yController.prototype.blockPaletteController = function() {
+    //give palette a region
+    this.blockPalette.setAttribute('role', 'region')
+    this.blockPalette.setAttribute('aria-label', 'block palette')
+    
+    //turn palette into a menu
+    this.blockCategoriesMenu.setAttribute('role', 'menu')
+    this.blockCategoriesMenu.setAttribute('aria-label', 'block categories')
+    this.blockCategoriesMenu.setAttribute('tabindex', '0')
+
+    //turn each category into a menu item of the palette menu
+    this.blockCategories.forEach(function(category) {
+        category.setAttribute('role', 'menuitemradio')
+        category.setAttribute('tabindex', '0')
+        category.setAttribute('aria-checked', 'false')
+        
+        //set selected category
+        if(category.classList.contains('droplet-palette-group-header-selected')) {
+            this.selectedCategory = category;
+            this.selectedCategory.setAttribute('aria-checked', 'true')
+        }
+    }, this);
+
+    //handle ariachecked logic
+    this.blockCategoriesMenu.addEventListener('click', function(e) {
+        this.selectedCategory.setAttribute('aria-checked', 'false') //old selected category
+        this.selectedCategory = document.querySelector('.droplet-palette-group-header-selected') //new selected category
+        this.selectedCategory.setAttribute('aria-checked', 'true')
+    }.bind(this))
 }
 
 //give elements the proper aria attributes
@@ -19,16 +55,10 @@ a11yController.prototype.addARIAattributes = function () {
     this.banner.setAttribute('role', 'banner')
 
     //block palette
-    this.blockPalette.setAttribute('role', 'region')
-    this.blockPalette.setAttribute('aria-label', 'block palette')
-    this.blockCategoriesMenu.setAttribute('role', 'menu')
-    this.blockCategoriesMenu.setAttribute('aria-label', 'block categories')
-    this.blockCategoriesMenu.setAttribute('tabindex', '0')
-
-    this.blockCategories.forEach(function(category) {
-        category.setAttribute('role', 'menuitemradio')
-        category.setAttribute('tabindex', '0')
-    }, this);
+    
+    //disable useless link
+    this.blockMenuHeader.setAttribute('tabindex', '-1')
+    this.blockMenuHeader.setAttribute('aria-hidden', 'true')
 
     //block editor
     this.blockEditor.setAttribute('role', 'region')
@@ -51,7 +81,6 @@ a11yController.prototype.addARIAattributes = function () {
 
     //New File Notification
     var overflowDiv = document.getElementById('notification').setAttribute('role', 'status')
-
 }
 
 //remove focus from elements that shouldn't have focus
