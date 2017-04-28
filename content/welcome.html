@@ -282,13 +282,9 @@ function trapTabKey(focusableElements) {
   // handle the instance in which the login button is disabled before the user
   // enters a name into the username field  
     if((lastEl instanceof HTMLButtonElement) && lastEl.disabled) {
-      console.log("element disabled");
       lastEl = focusableElements[focusableElements.length - 2][0];
     }
 
-  console.log("firstEl" + firstEl);
-  console.log("lastEl" + lastEl);
-  console.log(focusableElements);
   //check for tab key
   if(event.keyCode == 9) {
     //SHIFT + TAB 
@@ -307,7 +303,6 @@ function trapTabKey(focusableElements) {
   }
   //ESC key
   if(event.keyCode == 27) {
-    console.log('closing overlay');
     closeoverlay();
   }
 }
