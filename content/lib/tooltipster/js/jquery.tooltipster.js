@@ -137,9 +137,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 				var c = self.options.functionInit.call(self.$el, self.$el, self.Content);
 				if(typeof c !== 'undefined') self._content_set(c);
 				
+				var aria_label = self.$el.attr('title');
 				self.$el
 					// strip the title off of the element to prevent the default tooltips from popping up
 					.removeAttr('title')
+					//add stripped title to aria label
+					.attr('aria-label', aria_label)
 					// to be able to find all instances on the page later (upon window events in particular)
 					.addClass('tooltipstered');
 
