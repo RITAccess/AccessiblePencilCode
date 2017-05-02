@@ -139,6 +139,7 @@ a11yController.prototype.init = function () {
     document.querySelector('.droplet-main-canvas').setAttribute('tabindex', 0)
     document.querySelector('.droplet-hidden-input').setAttribute('tabindex', -1)
     var textInput = document.querySelector('.ace_text-input')
+    textInput.setAttribute("aria-label", "text editor cursor")
     textInput.addEventListener("focus", initFocus);
     textInput.blur();
     textInput.focus();
