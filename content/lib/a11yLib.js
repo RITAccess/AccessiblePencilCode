@@ -8,6 +8,7 @@ function a11yController() {
     this.blockToggle = document.querySelector('.blocktoggle')
     this.textToggle = document.querySelector('.texttoggle')
     this.blockMenuHeader = document.querySelector('.blockmenu')
+    this.textEditor = document.querySelector('.ace_editor')
     this.blockCategoriesMenu = document.querySelector('.droplet-palette-header')
     this.blockCategories = document.querySelectorAll('.droplet-palette-group-header')
     this.blockPicker = document.querySelector('.droplet-palette-scroller-stuffing')
@@ -16,6 +17,51 @@ function a11yController() {
     this.init();
     this.addARIAattributes(); 
     this.blockPaletteController();
+    this.editorToggleController();
+}
+
+//When the editor is toggled, the editor that is removed from view is removed from the accessibility tree
+a11yController.prototype.editorToggleController = function() {
+    var _this = this;
+    var topBlockEditor = parseInt(this.blockEditor.style.top, 10)
+    
+    this.blockToggle.setAttribute("role", "button")
+    this.textToggle.setAttribute("role", "button")
+    this.blockToggle.setAttribute("aria-label", "open block editor")
+    this.textToggle.setAttribute("aria-label", "open text editor")
+
+    //block editor is out of view
+    if(topBlockEditor < 0) {
+        enableTextMode()
+    } else { //text editor is out of view
+        enableBlockMode()
+    }
+
+    this.blockToggle.addEventListener("click", function () {
+        enableBlockMode()
+        console.log(this.blockEditor)
+        console.log(this.textEditor)
+    }.bind(this))
+
+    this.textToggle.addEventListener("click", function () {
+        enableTextMode()
+        console.log(this.blockEditor)
+        console.log(this.textEditor)
+    }.bind(this))
+
+    function enableTextMode() {
+        console.log("enabling text mode")
+        _this.textEditor.setAttribute("aria-hidden", "false")
+        _this.blockEditor.setAttribute("aria-hidden", "true")
+        _this.blockPalette.setAttribute("aria-hidden", "true")
+    }
+
+    function enableBlockMode() {
+        console.log("enabling block mode")
+        _this.textEditor.setAttribute("aria-hidden", "true")
+        _this.blockEditor.setAttribute("aria-hidden", "false")
+        _this.blockPalette.setAttribute("aria-hidden", "false")
+    }
 }
 
 a11yController.prototype.blockPaletteController = function() {
@@ -64,10 +110,6 @@ a11yController.prototype.addARIAattributes = function () {
     this.blockEditor.setAttribute('role', 'region')
     this.blockEditor.setAttribute('aria-label', 'block editor')
 
-    //editor mode toggle (they made two of them for some reason)
-    this.blockToggle.setAttribute('role', 'button')
-    this.textToggle.setAttribute('role', 'button')
-
     //presentation area
     var outputFrame = document.querySelector('#output-frame')
     var outputDocument = outputFrame.contentDocument || outputFrame.contentWindow.document
@@ -97,6 +139,7 @@ a11yController.prototype.init = function () {
     document.querySelector('.droplet-main-canvas').setAttribute('tabindex', 0)
     document.querySelector('.droplet-hidden-input').setAttribute('tabindex', -1)
     var textInput = document.querySelector('.ace_text-input')
+    textInput.setAttribute("aria-label", "text editor cursor")
     textInput.addEventListener("focus", initFocus);
     textInput.blur();
     textInput.focus();
@@ -104,53 +147,6 @@ a11yController.prototype.init = function () {
         document.getElementById('focus-guide').focus()
         textInput.removeEventListener("focus", initFocus)
     }
-}
-
-//old code left for reference
-a11yController.prototype.tabController = function (event) {
-    if(event.keyCode == 9) {
-        //SHIFT + TAB
-        if(event.shiftKey) {
-            //event.preventDefault();
-        } else {
-            if(document.activeElement == document.body) {
-                event.preventDefault();
-                document.querySelector(".skip").focus();
-            }
-        }
-    }
-    //ESC key
-    if(event.keyCode == 27) {
-        console.log('registered esc key');
-    }
-}
-
-//old code left for reference
-a11yController.prototype.setupPrimaryNav = function () {
-    //main ui sections
-    var blockEditor = document.querySelector('.droplet-main-scroller')
-    var blockCategory = document.querySelector('.droplet-palette-header')
-    var runButton = document.querySelector('#run')
-
-    //console exists in seperate iframe, so get the scope of the iframe to select it
-    var outputFrame = document.querySelector('#output-frame')
-    var outputDocument = outputFrame.contentDocument || outputFrame.contentWindow.document
-    var consoleInput = outputDocument.querySelector('._log #_testinput') //select console
-
-    //listed in navigation order
-    const primaryNavSections = [
-        blockEditor,
-        blockCategory,
-        runButton,
-        consoleInput
-    ]
-
-    //remove tab index from primary navigation so we can handle this manually
-    primaryNavSections.forEach(function(element) {
-        element.setAttribute("tabindex", -1);
-    })
-
-    return primaryNavSections;
 }
 
 //bootstrap a11y enhancements after window loads
