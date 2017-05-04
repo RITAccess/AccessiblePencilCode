@@ -77,7 +77,7 @@ a11yController.prototype.blockPaletteController = function() {
     //turn each category into a menu item of the palette menu
     this.blockCategories.forEach(function(category) {
         category.setAttribute('role', 'menuitemradio')
-        category.setAttribute('tabindex', '0')
+        category.setAttribute('tabindex', '-1')
         category.setAttribute('aria-checked', 'false')
         
         //set selected category
