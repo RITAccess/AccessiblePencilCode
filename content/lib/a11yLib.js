@@ -52,8 +52,20 @@ a11yController.prototype.addARIAattributes = function () {
     //console area
     outputFrame = document.querySelector('#output-frame')
     outputDocument = outputFrame.contentDocument || outputFrame.contentWindow.document
-    outputDocument.body.getElementsByClassName('turtlefield')[0].setAttribute('role', 'complementary');
-    outputDocument.body.getElementsByClassName('turtlefield')[0].setAttribute('aria-label', 'test panel');
+    outputDocument.body.getElementsByClassName('turtlefield')[0].setAttribute('role', 'region');
+    //aria-label used strategically so screen reader gives more context as to what a test panel is
+    outputDocument.body.getElementsByClassName('turtlefield')[0].setAttribute('aria-label', 'console');
+
+    //make panel header text and prompt caret unfocusable
+    //then make text input labeled by header so it is read by screen reader
+    outputDocument.getElementById('_testlog').setAttribute('tabindex', -1);
+    outputDocument.body.getElementsByClassName('_log')[0].setAttribute('tabindex', -1);
+    outputDocument.body.getElementsByClassName('_logcaret')[0].setAttribute('tabindex', -1);
+    outputDocument.body.getElementsByClassName('_log')[2].setAttribute('aria-labelledby', '_testpaneltitle');
+
+    //Hide elements from screen reader, because they are already labeled (prevents saying both)
+    outputDocument.body.getElementsByClassName('_log')[0].setAttribute('aria-hidden', 'true');
+    outputDocument.body.getElementsByClassName('_logcaret')[0].setAttribute('aria-hidden', 'true');
 
     //New File Notification
     var overflowDiv = document.getElementById('notification').setAttribute('role', 'status')
