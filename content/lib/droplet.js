@@ -62609,6 +62609,30 @@ hook('rebuild_palette', 1, function() {
       });
     };
   })(this);
+  fn2 = (function(_this) {
+    return function(block) {
+      hoverDiv.addEventListener('focus', function(event) {
+        console.log("focused a block")
+        if (block === _this.currentHighlightedPaletteBlock) {
+          _this.currentHighlightedPaletteBlock = null;
+          return _this.clearPaletteHighlightCanvas();
+        }
+
+          _this.clearPaletteHighlightCanvas();
+          _this.paletteHighlightPath = _this.getHighlightPath(block, {
+            color: '#FF0'
+          }, _this.paletteView);
+          _this.paletteHighlightPath.draw(_this.paletteHighlightCtx);
+          return _this.currentHighlightedPaletteBlock = block;
+      });
+      return hoverDiv.addEventListener('blur', function(event) {
+        if (block === _this.currentHighlightedPaletteBlock) {
+          _this.currentHighlightedPaletteBlock = null;
+          return _this.paletteHighlightCtx.clearRect(_this.scrollOffsets.palette.x, _this.scrollOffsets.palette.y, _this.paletteHighlightCanvas.width + _this.scrollOffsets.palette.x, _this.paletteHighlightCanvas.height + _this.scrollOffsets.palette.y);
+        }
+      });
+    };
+  })(this);
   results = [];
   for (j = 0, len = ref1.length; j < len; j++) {
     data = ref1[j];
@@ -62616,6 +62640,7 @@ hook('rebuild_palette', 1, function() {
     hoverDiv = document.createElement('div');
     hoverDiv.className = 'droplet-hover-div';
     hoverDiv.setAttribute('role', 'menuitem');
+    hoverDiv.setAttribute('tabindex', 0);
     hoverDiv.title = (ref2 = data.title) != null ? ref2 : block.stringify();
     hoverDiv.setAttribute('aria-label', hoverDiv.title + ' block');
     if (data.id != null) {
@@ -62627,6 +62652,7 @@ hook('rebuild_palette', 1, function() {
     hoverDiv.style.width = (Math.min(bounds.width, Infinity)) + "px";
     hoverDiv.style.height = bounds.height + "px";
     fn1(block);
+    fn2(block);
     results.push(this.paletteScrollerStuffing.appendChild(hoverDiv));
   }
   return results;
